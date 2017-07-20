@@ -3,6 +3,22 @@ import logo from './logo.svg';
 import './App.css';
 
 class App extends Component {
+  state = { words: [] };
+
+  componentDidMount() {
+    fetch('/words')
+      .then(res => res.json())
+      .then(words => this.setState({ words }));
+  }
+
+  renderWords() {
+    const { words } = this.state;
+
+    if (!words.length) return <div>No Words</div>;
+
+    return words.map(word => <li key={word}>{word}</li>);
+  }
+
   render() {
     return (
       <div className="App">
@@ -10,9 +26,9 @@ class App extends Component {
           <img src={logo} className="App-logo" alt="logo" />
           <h2>Welcome to React</h2>
         </div>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+        <ul>
+          {this.renderWords()}
+        </ul>
       </div>
     );
   }
